@@ -17,3 +17,35 @@ export async function getClinics() {
   const data = await response.json();
   return data;
 }
+
+
+
+export async function getAppointments() {
+
+
+  const response = await fetch(`${API_BASE}/appointments`);
+
+  const data = await response.json();
+  return data;
+
+}
+
+
+
+export async function addVaccine(vaccine) {
+
+  const response = await fetch(`${API_BASE}/vaccines`, {
+    method: "POST",
+    headers: {
+
+      "Content-Type": "application/json"
+
+    },
+    body: JSON.stringify(vaccine)
+  });
+
+  
+
+  return response.json();
+
+}
