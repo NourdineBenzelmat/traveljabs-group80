@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
-import { getVaccines, addVaccine } from "../../servicesfolder/api";
+import { getVaccines, addVaccine, deleteVaccine } from "../../servicesfolder/api";
 import "./vaccines.scss";
 
 function Vaccines() {
-
   const [vaccines, setVaccines] = useState([]);
-  
   const [name, setName] = useState("");
   const [cost, setCost] = useState("");
-
   useEffect(() => {
     loadVaccines();
   }, []);
-
   async function loadVaccines() {
     const data = await getVaccines();
     setVaccines(data);
   }
+
 
   async function handleSubmit(e) {
 
@@ -28,19 +25,28 @@ function Vaccines() {
     };
 
     await addVaccine(newVaccine);
-
     setName("");
     setCost("");
-
+    
     loadVaccines();
   }
+
+
+  async function handleDelete(id) {
+
+    await deleteVaccine(id);
+
+    loadVaccines();
+
+  }
+
 
   return (
     <div>
 
       <h2>Vaccines</h2>
-
       <form onSubmit={handleSubmit}>
+
 
         <input
           type="text"
@@ -59,7 +65,6 @@ function Vaccines() {
         <button type="submit">
           Add Vaccine
         </button>
-
       </form>
 
       <table>
@@ -69,9 +74,9 @@ function Vaccines() {
             <th>ID</th>
             <th>Name</th>
             <th>Cost</th>
+            <th>Action</th>
           </tr>
         </thead>
-
         <tbody>
 
           {vaccines.map((vaccine) => (
@@ -81,6 +86,12 @@ function Vaccines() {
               <td>{vaccine.VaccineID}</td>
               <td>{vaccine.VaccineName}</td>
               <td>{vaccine.VaccineCost}</td>
+
+              <td>
+                <button onClick={() => handleDelete(vaccine.VaccineID)}>
+                  Delete
+                </button>
+              </td>
 
             </tr>
 
@@ -95,7 +106,3 @@ function Vaccines() {
 }
 
 export default Vaccines;
-
-
-
-
